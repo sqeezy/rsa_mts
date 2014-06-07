@@ -8,6 +8,10 @@ namespace rsa_mts
 {
     class FileRead
     {
-        
+        public FileRead()
+        {
+            Console.WriteLine("Hello World.");
+            Console.ReadKey();
+        }
     }
 }
