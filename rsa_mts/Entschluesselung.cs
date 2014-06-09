@@ -23,53 +23,55 @@ namespace rsa_mts
          * @param int e - als schluessel
          * @return String Klartext
          */
-        public String entschluesseln(String geheimtext, int n, int e) {
-		//e zu BigInteger konvertiert damit Rechnung genauer ist
-		BigInteger bigE = (BigInteger)e;
-		//phiVonN zu BigInteger konvertiert damit Rechnung genauer ist
-		BigInteger bigPhiVonN = (BigInteger)verwaltung.getPhiVonN();
-		//d = multiplikative Inverse von e
-		BigInteger d = modInverse(bigE ,bigPhiVonN);
-		
-		//KLartext ist zunaechst leer
-		String klartext = "";
+        public String entschluesseln(String geheimtext, int n, int e)
+        {
+            //e zu BigInteger konvertiert damit Rechnung genauer ist
+            BigInteger eBig = (BigInteger)e;
+            //phiVonN zu BigInteger konvertiert damit Rechnung genauer ist
+            BigInteger bigPhiVonN = (BigInteger)verwaltung.getPhiVonN();
+            //d = multiplikative Inverse von e
+            BigInteger d = modInverse(eBig, bigPhiVonN);
 
+            //KLartext ist zunaechst leer
+            String klartext = "";
 
+            //geheimtext wird bei ; gesplittet und in ein Array gefuegt - dadurch benoetigt man keine Groessenangabe
+            String[] codes = geheimtext.Split(new Char[] { ';' });
 
-		//geheimtext wird bei ; gesplittet und in ein Array gefuegt - dadurch benoetigt man keine Groessenangabe
-		String[] codes = geheimtext.Split(new Char[] {';'});
-            
-		
-		//fuer jeden Code im Array
-		foreach (String code in codes) {
-			
-			//code wird zu long geparst - da BigInteger nur int's und longs annimmt
-			long codeAlsLong = Convert.ToInt64(code);
-			
-			//code(aktuell als long) wird zu bigInteger konvertiert da es genauer rechnet
-			BigInteger codeBI = (BigInteger)codeAlsLong;
-			
-			//zwischenrechnung = code wird mit d potenziert
-			BigInteger zwischenrechnung = (BigInteger)Math.Pow((double)codeBI, (double)d);
-			
-			//brauchbare Zahl = der int-Wert von zwischenrechnung modulo n
-            int brauchbareZahl = Convert.ToInt32(zwischenrechnung % n);
-            //(zwischenrechnung.mod(BigInteger.valueOf(n))).intValue();
+            //fuer jeden Code im Array
+            foreach (String code in codes)
+            {
 
-			//brauchbare zahl wird zu char gecastet - da jeder char eine eindeute ID hat
-			char gesuchterBuchstabe = (char)(brauchbareZahl);
-			
-			//klartext wird um gesuchten Buchstaben erweitert  
-			klartext += gesuchterBuchstabe;
-		}
+                //code wird zu long geparst - da BigInteger nur int's und longs annimmt
+                long codeAlsLong = Convert.ToInt32(code);
 
-		// gibt klartext zurueck
-		return klartext;
-	}
+                //code(aktuell als long) wird zu bigInteger konvertiert da es genauer rechnet
+                BigInteger codeBI = (BigInteger)codeAlsLong;
 
+                //zwischenrechnung = code wird mit d potenziert
+                double zwischenrechnung = Math.Pow((double)codeBI, (double)d);
 
+                //brauchbare Zahl = der int-Wert von zwischenrechnung modulo n
+                int brauchbareZahl = (int)zwischenrechnung % n;
 
-       private BigInteger modInverse(BigInteger a, BigInteger n)
+                //brauchbare zahl wird zu char gecastet - da jeder char eine eindeute ID hat
+                char gesuchterBuchstabe = (char)(brauchbareZahl);
+
+                //klartext wird um gesuchten Buchstaben erweitert  
+                klartext += gesuchterBuchstabe;
+            }
+
+            // gibt klartext zurueck
+            return klartext;
+        }
+
+        /// <summary>
+        /// Methode um Modualre Inverse mittels Big Integer zu berechen
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="n"></param>
+        /// <returns> modulare Inverse zweier Zahlen</returns>
+        private BigInteger modInverse(BigInteger a, BigInteger n)
         {
             BigInteger i = n, v = 0, d = 1;
             while (a > 0)
@@ -85,7 +87,7 @@ namespace rsa_mts
             if (v < 0) v = (v + n) % n;
             return v;
         }
-
-
     }
 }
+
+
