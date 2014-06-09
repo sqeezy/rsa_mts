@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,8 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entschluesselung.cs" />
     <Compile Include="FileRead.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Verschluesselung.cs" />
+    <Compile Include="Verwaltung.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
