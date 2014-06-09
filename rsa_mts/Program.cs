@@ -59,6 +59,7 @@ namespace rsa_mts
                 Console.WriteLine("OEFFENTLICHE SCHLUESSEL");
                 Console.WriteLine("n= " + verwaltung.getClearN());
                 Console.WriteLine("e= " + verwaltung.getE());
+                Console.ReadKey();
 
             }
             else if (zeile.Equals("2"))
@@ -96,6 +97,7 @@ namespace rsa_mts
                 Console.WriteLine("Entschluesselt: "
                         + entschluesselung.entschluesseln(code, verwaltung.getN(),
                                 verwaltung.getE()));
+                Console.ReadKey();
 
             }
 
