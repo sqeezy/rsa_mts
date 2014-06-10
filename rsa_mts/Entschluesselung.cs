@@ -31,10 +31,11 @@ namespace rsa_mts
             BigInteger bigPhiVonN = (BigInteger)verwaltung.getPhiVonN();
             //d = multiplikative Inverse von e
             BigInteger d = modInverse(eBig, bigPhiVonN);
+            int dAlsInt = (int)d;
 
             //KLartext ist zunaechst leer
             String klartext = "";
-
+            geheimtext = geheimtext.Remove(geheimtext.Length - 1);
             //geheimtext wird bei ; gesplittet und in ein Array gefuegt - dadurch benoetigt man keine Groessenangabe
             String[] codes = geheimtext.Split(new Char[] { ';' });
 
@@ -49,13 +50,13 @@ namespace rsa_mts
                 BigInteger codeBI = (BigInteger)codeAlsLong;
 
                 //zwischenrechnung = code wird mit d potenziert
-                double zwischenrechnung = Math.Pow((double)codeBI, (double)d);
+                BigInteger zwischenrechnung = BigInteger.Pow(codeBI, dAlsInt);
 
                 //brauchbare Zahl = der int-Wert von zwischenrechnung modulo n
-                int brauchbareZahl = (int)zwischenrechnung % n;
+                int brauchbareZahl = (int)(zwischenrechnung % (BigInteger)n);
 
                 //brauchbare zahl wird zu char gecastet - da jeder char eine eindeute ID hat
-                char gesuchterBuchstabe = (char)(brauchbareZahl);
+                char gesuchterBuchstabe = (char)brauchbareZahl;
 
                 //klartext wird um gesuchten Buchstaben erweitert  
                 klartext += gesuchterBuchstabe;

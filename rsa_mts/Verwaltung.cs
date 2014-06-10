@@ -124,35 +124,39 @@ namespace rsa_mts
 	 * @return Arraylist mit Booleanwerten danach wird in isPrimzahl geschaut ob
 	 *         diese Zahl in der Liste ist
 	 */
-	public static List<bool> aussieben(int zahl) {
+    public static List<bool> aussieben(int zahl)
+    {
 
-		// Legt eine neue Liste an
-		List<bool> zahlenListe;
-        bool[] zahlenArray = new bool[zahl];
+        // Legt eine neue Liste an
+        List<bool> zahlenListe = new List<bool>();
 
-		// Füllt die neue Liste mit lauter true-Elementen
-		for (int i = 0; i <= zahl; i++) {
-            zahlenArray[i]= true;
-		}
+        // Füllt die neue Liste mit lauter true-Elementen
+        for (int i = 0; i <= zahl; i++)
+        {
+            zahlenListe.Add(true);
+        }
 
-		for (int i = 2; i <= zahl; i++) {
+        for (int i = 2; i <= zahl; i++)
+        {
 
-			if (zahlenArray[i] == true) {
-				int j = i;
-				do {
-					j = j + i;
-					if (j <= zahl) {
-						// Ist die Zahl ein Vielfaches einer
-						// Primzahl, dann wird sie mit false
-						// markiert
-						zahlenArray[j]= false;
-					}
-				} while (j <= zahl);
-			}
-		}
-        zahlenListe = zahlenArray.ToList();
-		return zahlenListe;
-	}
+            if (zahlenListe[i] == true)
+            {
+                int j = i;
+                do
+                {
+                    j = j + i;
+                    if (j <= zahl)
+                    {
+                        // Ist die Zahl ein Vielfaches einer
+                        // Primzahl, dann wird sie mit false
+                        // markiert
+                        zahlenListe[j] = false;
+                    }
+                } while (j <= zahl);
+            }
+        }
+        return zahlenListe;
+    }
 
 	/**
 	 * Methode um P & Q einzulesen
