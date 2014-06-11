@@ -48,6 +48,8 @@
     <Compile Include="Entschluesselung.cs" />
     <Compile Include="FileRead.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="RSA.cs" />
+    <Compile Include="RsaException.cs" />
     <Compile Include="Verschluesselung.cs" />
     <Compile Include="Verwaltung.cs" />
   </ItemGroup>

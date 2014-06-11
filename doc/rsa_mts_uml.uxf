@@ -4,67 +4,67 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>20</x>
-      <y>20</y>
-      <w>140</w>
-      <h>100</h>
+      <x>380</x>
+      <y>320</y>
+      <w>200</w>
+      <h>60</h>
     </coordinates>
-    <panel_attributes>RsaEncryption
+    <panel_attributes>_FileRead_
+
 --
-e,d,p,q,N : int
- 
---
-Encrypt(data):data
-Decrypt(data):data</panel_attributes>
+_+Read(filepath: string): byte[ ]_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>250</x>
-      <y>60</y>
-      <w>310</w>
+      <x>530</x>
+      <y>130</y>
+      <w>140</w>
       <h>80</h>
     </coordinates>
-    <panel_attributes>_PrimeNumberGenerator_
- 
---
-IsPrime(n: int): bool
---
-GetPrime(lowerBound:int, upperBound: int)</panel_attributes>
+    <panel_attributes>TUIRSA(program.cs)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>130</x>
-      <y>50</y>
+      <x>450</x>
+      <y>180</y>
+      <w>160</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>140;30;30;140</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>640</x>
+      <y>320</y>
+      <w>210</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>RSA
+--
++ RSA(int p, int q)
+--
++ Encrypt(data: byte[ ]) : byte[ ]
++ Decrypt(data: byte[ ]) : byte[ ]
++ PrivateKey : Tuple&lt;int,int&gt;
++ PublicKey : Tuple&lt;int,int&gt;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>620</x>
+      <y>180</y>
       <w>140</w>
-      <h>50</h>
+      <h>160</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>30;30;120;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>210</x>
-      <y>170</y>
-      <w>100</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>FileRead</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>360</x>
-      <y>170</y>
-      <w>100</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>TUIRSA</panel_attributes>
-    <additional_attributes/>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;120;140</additional_attributes>
   </element>
 </diagram>

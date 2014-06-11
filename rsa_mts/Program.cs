@@ -10,6 +10,22 @@ namespace rsa_mts
     {
         static void Main(string[] args)
         {
+            byte[] data = FileRead.Read("textdatei.txt");
+
+            //ausgabe in konsole
+
+            //verschlüsseln
+
+            //ausgabe in konsole
+
+            //entschlüsseln
+
+            //ausgabe in konsole
+        }
+
+        //erstmal ersetzt
+        static void Main_old(string[] args)
+        {
 
             // Neue Instanz der Verwaltung
             Verwaltung verwaltung = new Verwaltung();

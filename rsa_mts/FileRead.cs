@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace rsa_mts
 {
-    public static class FileRead
+    internal static class FileRead
     {
         public static byte[] Read(string filepath)
         {
