@@ -8,39 +8,41 @@ namespace rsa_mts
 {
     class Program
     {
+        /// <summary>
+        /// Main Methode
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
-
             // Neue Instanz der Verwaltung
             Verwaltung verwaltung = new Verwaltung();
             // Zeile ist anfangs null
             String zeile = null;
 
-
             Console.WriteLine("Moechten Sie einen Klartext verschluesseln? Waehlen Sie die 1");
 
             Console.WriteLine("Oder wenn sie Einen Geheimtext entschluesseln wollen, waehlen Sie die 2");
 
+            //Zwar wird keine Nachricht eingelesen, Methode bietet sich dafuer aber an
             zeile = verwaltung.einlesenNachricht();
+            
+            //wen 1 eingegeben wurde, wird Klartext verschluesselt
             if (zeile.Equals("1"))
             {
-
-
-                Console.WriteLine("Bitte geben Sie die zweistellige Primzahl = e, die ihnen mitgeteilt wurde ein");
+                Console.WriteLine("Bitte geben Sie die mindestens zweistellige Primzahl = e, die ihnen mitgeteilt wurde ein");
                 // Zugiff auf Verwaltung einlesen PrimzahlE , da noch ueberprueft
                 // wird ob teilerfremd
                 zeile = verwaltung.einlesenPrimzahlE();
-                // wenn Primzahl und teilerfremd, wird diese in int geparst und e
+                // wenn e = Primzahl und teilerfremd, wird diese in int geparst und e in der Verwaltung
                 // zugewiesen
                 verwaltung.setE(Convert.ToInt32(zeile));
 
                 Console.WriteLine("Bitte geben Sie n ein");
 
+                //n einlesen
                 zeile = verwaltung.einlesenN();
-                // wenn Primzahl und teilerfremd, wird diese in int geparst und e
-                // zugewiesen
+                //n wird zu int konvertiert und in der Verwaltung gesetzt
                 verwaltung.setN(Convert.ToInt32(zeile));
-
 
                 Console.WriteLine("NACHRICHT");
                 Console.WriteLine("************************");
@@ -60,14 +62,14 @@ namespace rsa_mts
                 Console.WriteLine("n= " + verwaltung.getClearN());
                 Console.WriteLine("e= " + verwaltung.getE());
                 Console.ReadKey();
-
             }
+
+            //wenn 2 eingegeben wurde wird geheimtext entschluesselt
             else if (zeile.Equals("2"))
             {
-
                 // Zweistellig ist wichtig sonst kommen bei der entschluesselung
                 // kryptische Ergebnisse raus
-                Console.WriteLine("bitte geben sie die zweistellige Primzahl = p ein:");
+                Console.WriteLine("bitte geben sie eine mindestens zweistellige Primzahl = p ein:");
                 // Zugiff auf Verwaltung einlesen Primzahl
                 zeile = verwaltung.einlesenPrimzahl();
 
@@ -76,7 +78,7 @@ namespace rsa_mts
 
                 // Zweistellig ist wichtig sonst kommen bei der entschluesselung
                 // kryptische Ergebnisse raus
-                Console.WriteLine("Bitte geben Sie die andere zweistellige Primzahl = q ein:");
+                Console.WriteLine("Bitte geben Sie die andere mindestens zweistellige Primzahl = q ein:");
                 // Zugiff auf Verwaltung einlesen Primzahl
                 zeile = verwaltung.einlesenPrimzahl();
                 // wenn Primzahl, wird diese in int geparst und q zugewiesen
@@ -89,20 +91,19 @@ namespace rsa_mts
                 // wenn Primzahl und teilerfremd, wird diese in int geparst und e
                 // zugewiesen
                 verwaltung.setE(Convert.ToInt32(zeile));
+                Console.WriteLine("GEHEIMCODE");
+                Console.WriteLine("***************************************");
                 Console.WriteLine("Nun bitte der zu entschluesselne Code.");
                 // neue Instanz der Entschluesselung wird gestartet und die
-                // Verwaltung uebergeben
+                // aktuelle Verwaltung wird uebergeben
                 Entschluesselung entschluesselung = new Entschluesselung(verwaltung);
                 String code = verwaltung.einlesenNachricht();
                 Console.WriteLine("Entschluesselt: "
                         + entschluesselung.entschluesseln(code, verwaltung.getN(),
                                 verwaltung.getE()));
                 Console.ReadKey();
-
             }
-
         }
     }
-
 }
 

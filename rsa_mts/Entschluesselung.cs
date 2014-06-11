@@ -10,46 +10,52 @@ namespace rsa_mts
     {
         private Verwaltung verwaltung;
 
-        //aktuelle Verwaltung wird uebergeben
+        //aktuelle Verwaltung wird uebergeben und lokal zugewiesen
         public Entschluesselung(Verwaltung v)
         {
             this.verwaltung = v;
         }
 
-        /**
-         * Methode um geheimtext zu entschluesseln
-         * @param String geheimtext
-         * @param int n - als schluessel
-         * @param int e - als schluessel
-         * @return String Klartext
-         */
+        /// <summary>
+        /// Methode um Geheomtext in Klartext zu entschluesseln.
+        /// Dabei werden Geheimtext, n und e uebergeben
+        /// </summary>
+        /// <param name="geheimtext"></param>
+        /// <param name="n"></param>
+        /// <param name="e"></param>
+        /// <returns>String Klartext</returns>
         public String entschluesseln(String geheimtext, int n, int e)
         {
             //e zu BigInteger konvertiert damit Rechnung genauer ist
             BigInteger eBig = (BigInteger)e;
             //phiVonN zu BigInteger konvertiert damit Rechnung genauer ist
             BigInteger bigPhiVonN = (BigInteger)verwaltung.getPhiVonN();
+            
             //d = multiplikative Inverse von e
             BigInteger d = modInverse(eBig, bigPhiVonN);
+            
+            //d als int wird benoetigt, da BigInteger.pow ein int als exponent benoetigt
             int dAlsInt = (int)d;
 
-            //KLartext ist zunaechst leer
+            //Klartext ist zunaechst leer
             String klartext = "";
+            
+            //das letzte Semikolon wird entfernt, da die Split Methode sonst an der letzten Stelle ein Leerzeichen ausgibt
             geheimtext = geheimtext.Remove(geheimtext.Length - 1);
+
             //geheimtext wird bei ; gesplittet und in ein Array gefuegt - dadurch benoetigt man keine Groessenangabe
             String[] codes = geheimtext.Split(new Char[] { ';' });
 
             //fuer jeden Code im Array
             foreach (String code in codes)
             {
+                //code wird zu int geparst - da BigInteger nur int's und longs annimmt
+                int codeAlsLong = Convert.ToInt32(code);
 
-                //code wird zu long geparst - da BigInteger nur int's und longs annimmt
-                long codeAlsLong = Convert.ToInt32(code);
-
-                //code(aktuell als long) wird zu bigInteger konvertiert da es genauer rechnet
+                //code(aktuell als int) wird zu bigInteger konvertiert da es genauer rechnet
                 BigInteger codeBI = (BigInteger)codeAlsLong;
 
-                //zwischenrechnung = code wird mit d potenziert
+                //zwischenrechnung = code wird mit d(int) potenziert
                 BigInteger zwischenrechnung = BigInteger.Pow(codeBI, dAlsInt);
 
                 //brauchbare Zahl = der int-Wert von zwischenrechnung modulo n
