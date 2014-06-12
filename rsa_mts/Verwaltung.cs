@@ -109,14 +109,11 @@ namespace rsa_mts
 	 * @param zahl
 	 * @return boolean ob es eine Primzahl ist oder nicht
 	 */
-    private bool isPrimzahl(int zahl)
+   /*private bool isPrimzahl(int zahl)
     {
-		// Zahl wird an aussieben übergeben
-		List<bool> liste = aussieben(zahl);
-
-		return liste.ElementAt(zahl);
+		
 	}
-
+        */
 	/**
 	 * Sieb des Eratosthenes
 	 * 
@@ -163,7 +160,7 @@ namespace rsa_mts
 	 * 
 	 * @return String Primzahl wenn sie denn eine ist
 	 */
-	public String einlesenPrimzahl() {
+	/*public String einlesenPrimzahl() {
 		try {
 			// Einlesen
             zeile = Console.In.ReadLine();
@@ -192,7 +189,7 @@ namespace rsa_mts
 		}
 		return null;
 	}
-
+        */
 	/**
 	 * Methode um n einzulesen
 	 * 
@@ -222,7 +219,7 @@ namespace rsa_mts
 	 * 
 	 * @return String Primzahl wenn sie denn eine ist und teilerfremd mit N ist
 	 */
-	public String einlesenPrimzahlE() {
+	/*public String einlesenPrimzahlE() {
 		try {
 			// Einlesen
 			zeile = Console.In.ReadLine();
@@ -251,7 +248,7 @@ namespace rsa_mts
 			e.StackTrace.ToString();;
 		}
 		return null;
-	}
+	}*/
 
 	/**
 	 * Methode um Nachricht einzulesen
