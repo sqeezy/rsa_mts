@@ -14,6 +14,26 @@ namespace rsa_mts
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+<<<<<<< HEAD
+=======
+            byte[] data = FileRead.Read("textdatei.txt");
+
+            //ausgabe in konsole
+
+            //verschlüsseln
+
+            //ausgabe in konsole
+
+            //entschlüsseln
+
+            //ausgabe in konsole
+        }
+
+        //erstmal ersetzt
+   /*     static void Main_old(string[] args)
+        {
+
+>>>>>>> 61b282a0a7b51f3f4c1fd398daa62c2051c343c1
             // Neue Instanz der Verwaltung
             Verwaltung verwaltung = new Verwaltung();
             // Zeile ist anfangs null
@@ -104,6 +124,6 @@ namespace rsa_mts
                 Console.ReadKey();
             }
         }
-    }
+    */}
 }
 
