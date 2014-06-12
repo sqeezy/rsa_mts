@@ -3,74 +3,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace rsa_mts
 {
     internal class RSA
     {
-        private BigInteger _p;
-        private BigInteger _q;
         private BigInteger _n;
-        private BigInteger _phi_n;
         private BigInteger _e;
         private BigInteger _d;
 
-        public RSA(int p = 17, int q = 19)
+        public RSA(int primeOne = 1327, int primeTwo = 2099)
         {
-            if (IsPrime(p) && IsPrime(q))
+            if (!IsPrime(primeOne)||!IsPrime(primeTwo))
             {
-                _p = p;
-                _q = q;
+                throw new ArgumentException("Inputs have to be prime");
             }
-            else
-            {
-                this._p = 31;
-                this._q = 37;
-            }
+            BigInteger p = new BigInteger(primeOne);
+            BigInteger q = new BigInteger(primeTwo);
+
+            _n = BigInteger.Multiply(p, q);
+            BigInteger phiN = new BigInteger((primeOne - 1)*(primeTwo - 1));
+
+            _e = new BigInteger(65537);//Fermatzahl
+            _d = ModInverse(_e, phiN);
         }
 
-        public Tuple<int, int> PublicKey
+        public int Encrypt(int msg)
         {
-            get
-            {
-                try
-                {
-                    return new Tuple<int, int>((int) _e, (int) _n);
-                }
-                catch (InvalidCastException)
-                {
-                    Console.WriteLine("Some error thing.");
-                    Console.ReadKey();
-                    throw new RsaException("Error because of BigInteger to int cast.");
-                }
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            return (int)BigInteger.ModPow(new BigInteger(msg), _e, _n);
         }
 
-        public Tuple<int, int> PrivateKey
+        public int Decrypt(int msg)
         {
-            get
-            {
-                try
-                {
-                    return new Tuple<int, int>((int) _d, (int) _n);
-                }
-                catch (InvalidCastException)
-                {
-                    Console.WriteLine("Some error thing.");
-                    Console.ReadKey();
-                    throw new RsaException("Error because of BigInteger to int cast.");
-                }
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            return (int) BigInteger.ModPow(new BigInteger(msg), _d, _n);
         }
+
         /// <summary>
         /// Sieb des Eratosthenes
         /// </summary>
@@ -112,80 +81,13 @@ namespace rsa_mts
             return zahlenListe.ElementAt(n);
         }
 
-
-        public byte[] Encrypt(byte[] data)
-        {
-             // Ursprung Ausgabetext
-            byte[] ausgabetext = new byte[data.Length];
-
-            // Fuer jedes Zeichen im Eingabetext
-            for (int i = 0; i < data.Length; i++)
-            {
-                // zu Behandelndes Zeichen = eingabetext an der Stelle i
-                byte zubehandelndesZeichen = data[i];
-
-                // zu behandelndes Zeichen wird eindeutige Zahl(int) vergeben und zu
-                // BigInteger konvertiert da es sich genauer rechnen laesst
-                BigInteger bigValueOfByte = (int)zubehandelndesZeichen;
-
-                // zwischenergebnis = zu Behandelndes Zeichen (bzw jetzt eindeutige zahl)hoch Variable e
-                BigInteger zwischenergebnis =potenzieren(bigValueOfByte, (int)_e);
-
-                //verschluesselte Zahl = zu Behandelndes Zeichen (bzw jetzt eindeutige zahl) modulo N
-                BigInteger verschluesseltesZeichen = zwischenergebnis % _n;
-
-                //Verschluesselte Zahl wird zu String konvertiert und dann an den Ausgabetext angehangen
-                ausgabetext[i] = (byte)verschluesseltesZeichen;
-            }
-            //gibt ausgabetext/Geheimtext zurueck
-            return ausgabetext;
-        }
-        
-
-        public byte[] Decrypt(byte[] encryptedData)
-        {
-            //d = multiplikative Inverse von e
-            _d = modInverse(_e, _phi_n);
-
-            //d als int wird benoetigt, da BigInteger.pow ein int als exponent benoetigt
-            int dAlsInt = (int)_d;
-
-            //Neues byteArray fuer spaeteren klartext
-           byte[] klartext = new byte[encryptedData.Length];
-
-            //fuer jeden Code im Array
-            for (int i = 0; i<klartext.Length; ++i)
-            {
-                //code wird zu int geparst - da BigInteger nur int's und longs annimmt
-                int codeAlsLong = Convert.ToInt32(klartext[i]);
-
-                //code(aktuell als int) wird zu bigInteger konvertiert da es genauer rechnet
-                BigInteger codeBI = (BigInteger)codeAlsLong;
-
-                //zwischenrechnung = code wird mit d(int) potenziert
-                BigInteger zwischenrechnung = potenzieren(codeBI, dAlsInt);
-
-                //brauchbare Zahl = der int-Wert von zwischenrechnung modulo n
-                int brauchbareZahl = (int)(zwischenrechnung % (BigInteger)_n);
-
-                //brauchbare zahl wird zu char gecastet - da jeder char eine eindeute ID hat
-                byte gesuchterBuchstabe = (byte)brauchbareZahl;
-
-                //klartext wird um gesuchten Buchstaben erweitert  
-                klartext[i] = gesuchterBuchstabe;
-            }
-
-            // gibt klartext zurueck
-            return klartext;
-        }
-
          /// <summary>
         /// Methode um Modualre Inverse mittels Big Integer zu berechen
         /// </summary>
         /// <param name="a"></param>
         /// <param name="n"></param>
         /// <returns> modulare Inverse zweier Zahlen</returns>
-        private BigInteger modInverse(BigInteger a, BigInteger n)
+        private BigInteger ModInverse(BigInteger a, BigInteger n)
         {
             BigInteger i = n, v = 0, d = 1;
             while (a > 0)
