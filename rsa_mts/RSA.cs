@@ -18,7 +18,16 @@ namespace rsa_mts
 
         public RSA(int p = 17, int q = 19)
         {
-            //Testen ob p und q prim sind
+            if (IsPrime(p) && IsPrime(q))
+            {
+                _p = p;
+                _q = q;
+            }
+            else
+            {
+                this._p = 31;
+                this._q = 37;
+            }
         }
 
         public Tuple<int, int> PublicKey
@@ -120,7 +129,7 @@ namespace rsa_mts
                 BigInteger bigValueOfByte = (int)zubehandelndesZeichen;
 
                 // zwischenergebnis = zu Behandelndes Zeichen (bzw jetzt eindeutige zahl)hoch Variable e
-                BigInteger zwischenergebnis = BigInteger.Pow(bigValueOfByte, (int)_e);
+                BigInteger zwischenergebnis =potenzieren(bigValueOfByte, (int)_e);
 
                 //verschluesselte Zahl = zu Behandelndes Zeichen (bzw jetzt eindeutige zahl) modulo N
                 BigInteger verschluesseltesZeichen = zwischenergebnis % _n;
@@ -154,7 +163,7 @@ namespace rsa_mts
                 BigInteger codeBI = (BigInteger)codeAlsLong;
 
                 //zwischenrechnung = code wird mit d(int) potenziert
-                BigInteger zwischenrechnung = BigInteger.Pow(codeBI, dAlsInt);
+                BigInteger zwischenrechnung = potenzieren(codeBI, dAlsInt);
 
                 //brauchbare Zahl = der int-Wert von zwischenrechnung modulo n
                 int brauchbareZahl = (int)(zwischenrechnung % (BigInteger)_n);
@@ -192,6 +201,23 @@ namespace rsa_mts
             if (v < 0) v = (v + n) % n;
             return v;
         }
+
+        /// <summary>
+        /// Potenziert zwei Zahlen miteinander
+        /// </summary>
+        /// <param name="basis als BigInteger"></param>
+        /// <param name="exponent als Integer"></param>
+        /// <returns>Big Integer Ergebnis=basis^exponent</returns>
+        public BigInteger potenzieren(BigInteger basis, int exponent)
+        {
+            BigInteger ergebnis = 1;
+            for (int i = 1; i <= exponent; ++i)
+            {
+                ergebnis = ergebnis * basis;
+            }
+            return ergebnis;
+        }
+
     }
     
 }
