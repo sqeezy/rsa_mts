@@ -107,38 +107,6 @@ namespace rsa_mts
             return v;
         }
 
-<<<<<<< HEAD
-        /// <summary>
-        /// Potenziert zwei Zahlen miteinander
-        /// </summary>
-        /// <param name="basis als BigInteger"></param>
-        /// <param name="exponent als Integer"></param>
-        /// <returns>Big Integer Ergebnis=basis^exponent</returns>
-        public BigInteger potenzieren(BigInteger basis,
-                                      int exponent)
-        {
-            BigInteger ergebnis = 1;
-            if (exponent < 0)
-            {
-                exponent = exponent * -1;
-                for (var i = 1; i <= exponent; ++i)
-                {
-                    ergebnis = ergebnis * basis;
-                }
-                return 1 / ergebnis;
-            }
-            else
-            {
-                for (var i = 1; i <= exponent; ++i)
-                {
-                    ergebnis = ergebnis * basis;
-                }
-            }
-            return ergebnis;
-        }
-
-=======
->>>>>>> 90cd6e37035bde08ce1a374af59b43fbb325fc6b
         private BigInteger ModPow(BigInteger basis,
                                   BigInteger exp,
                                   BigInteger mod)
