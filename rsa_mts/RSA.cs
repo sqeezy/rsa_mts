@@ -22,7 +22,7 @@ namespace rsa_mts
             var q = new BigInteger(primeTwo);
 
             _n = BigInteger.Multiply(p, q);
-            BigInteger phiN = new BigInteger((primeOne - 1)*(primeTwo - 1));
+            var phiN = new BigInteger((primeOne - 1)*(primeTwo - 1));
 
             _e = new BigInteger(65537); //Fermatzahl
             _d = ModInverse(_e, phiN);
@@ -76,8 +76,6 @@ namespace rsa_mts
 
             return zahlenListe.ElementAt(n);
         }
-
-
 
         /// <summary>
         /// Methode um Modualre Inverse mittels Big Integer zu berechen
@@ -143,9 +141,14 @@ namespace rsa_mts
                                   BigInteger mod)
         {
             BigInteger result = 1;
-            for (int i = 1; i <= exp; i++)
+            while (exp > 0)
             {
-                result = (result*basis)%mod;
+                if (!exp.IsEven)
+                {
+                    result = (result*basis)%mod;
+                }
+                exp >>= 1;
+                basis = (basis*basis)%mod;
             }
             return result;
         }
