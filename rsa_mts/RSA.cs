@@ -36,7 +36,7 @@ namespace rsa_mts
             {
                 try
                 {
-                    return new Tuple<int, int>((int) _e, (int) _n);
+                    return new Tuple<int, int>((int)_e, (int)_n);
                 }
                 catch (InvalidCastException)
                 {
@@ -57,7 +57,7 @@ namespace rsa_mts
             {
                 try
                 {
-                    return new Tuple<int, int>((int) _d, (int) _n);
+                    return new Tuple<int, int>((int)_d, (int)_n);
                 }
                 catch (InvalidCastException)
                 {
@@ -79,7 +79,7 @@ namespace rsa_mts
         /// diese Zahl in der Liste ist</returns>
         private bool IsPrime(int n)
         {
-            
+
             // Legt eine neue Liste an
             List<bool> zahlenListe = new List<bool>();
 
@@ -108,14 +108,14 @@ namespace rsa_mts
                     } while (j <= n);
                 }
             }
-            
+
             return zahlenListe.ElementAt(n);
         }
 
 
         public byte[] Encrypt(byte[] data)
         {
-             // Ursprung Ausgabetext
+            // Ursprung Ausgabetext
             byte[] ausgabetext = new byte[data.Length];
 
             // Fuer jedes Zeichen im Eingabetext
@@ -129,7 +129,7 @@ namespace rsa_mts
                 BigInteger bigValueOfByte = (int)zubehandelndesZeichen;
 
                 // zwischenergebnis = zu Behandelndes Zeichen (bzw jetzt eindeutige zahl)hoch Variable e
-                BigInteger zwischenergebnis =potenzieren(bigValueOfByte, (int)_e);
+                BigInteger zwischenergebnis = potenzieren(bigValueOfByte, (int)_e);
 
                 //verschluesselte Zahl = zu Behandelndes Zeichen (bzw jetzt eindeutige zahl) modulo N
                 BigInteger verschluesseltesZeichen = zwischenergebnis % _n;
@@ -140,7 +140,7 @@ namespace rsa_mts
             //gibt ausgabetext/Geheimtext zurueck
             return ausgabetext;
         }
-        
+
 
         public byte[] Decrypt(byte[] encryptedData)
         {
@@ -151,10 +151,10 @@ namespace rsa_mts
             int dAlsInt = (int)_d;
 
             //Neues byteArray fuer spaeteren klartext
-           byte[] klartext = new byte[encryptedData.Length];
+            byte[] klartext = new byte[encryptedData.Length];
 
             //fuer jeden Code im Array
-            for (int i = 0; i<klartext.Length; ++i)
+            for (int i = 0; i < klartext.Length; ++i)
             {
                 //code wird zu int geparst - da BigInteger nur int's und longs annimmt
                 int codeAlsLong = Convert.ToInt32(klartext[i]);
@@ -179,7 +179,7 @@ namespace rsa_mts
             return klartext;
         }
 
-         /// <summary>
+        /// <summary>
         /// Methode um Modualre Inverse mittels Big Integer zu berechen
         /// </summary>
         /// <param name="a"></param>
@@ -217,7 +217,5 @@ namespace rsa_mts
             }
             return ergebnis;
         }
-
     }
-    
 }
