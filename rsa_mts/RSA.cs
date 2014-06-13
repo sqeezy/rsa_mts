@@ -120,16 +120,19 @@ namespace rsa_mts
             BigInteger ergebnis = 1;
             if (exponent < 0)
             {
-                exponent = exponent*-1;
+                exponent = exponent * -1;
                 for (var i = 1; i <= exponent; ++i)
                 {
-                    ergebnis = ergebnis*basis;
+                    ergebnis = ergebnis * basis;
                 }
-                return 1/ergebnis;
+                return 1 / ergebnis;
             }
-            for (var i = 1; i <= exponent; ++i)
+            else
             {
-                ergebnis = ergebnis*basis;
+                for (var i = 1; i <= exponent; ++i)
+                {
+                    ergebnis = ergebnis * basis;
+                }
             }
             return ergebnis;
         }
