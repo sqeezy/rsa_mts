@@ -25,7 +25,6 @@ namespace rsa_mts
    /*     static void Main_old(string[] args)
         {
 
->>>>>>> 61b282a0a7b51f3f4c1fd398daa62c2051c343c1
             // Neue Instanz der Verwaltung
             Verwaltung verwaltung = new Verwaltung();
             // Zeile ist anfangs null

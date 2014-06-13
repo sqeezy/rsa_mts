@@ -3,38 +3,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Numerics;
-using System.Runtime.InteropServices;
 using System.Text;
 
 namespace rsa_mts
 {
     internal class RSA
     {
+        private BigInteger _p;
+        private BigInteger _q;
         private BigInteger _n;
+        private BigInteger _phi_n;
         private BigInteger _e;
         private BigInteger _d;
-        BigInteger phiN;
-        public RSA(int primeOne = 1327, int primeTwo = 2099)
+
+        public RSA(int p = 17, int q = 19)
         {
-            if (!IsPrime(primeOne)||!IsPrime(primeTwo))
+            if (IsPrime(p) && IsPrime(q))
             {
-                throw new ArgumentException("Inputs have to be prime");
+                _p = p;
+                _q = q;
             }
-            BigInteger p = new BigInteger(primeOne);
-            BigInteger q = new BigInteger(primeTwo);
-
-            _n = BigInteger.Multiply(p, q);
-             phiN = new BigInteger((primeOne - 1)*(primeTwo - 1));
-
-            _e = new BigInteger(65537);//Fermatzahl
-            _d = ModInverse(_e, phiN);
+            else
+            {
+                this._p = 31;
+                this._q = 37;
+            }
         }
 
-        public int Encrypt(int msg)
+        public Tuple<int, int> PublicKey
         {
+            get
+            {
                 try
                 {
-                    return new Tuple<int, int>((int)_e, (int)_n);
+                    return new Tuple<int, int>((int) _e, (int) _n);
                 }
                 catch (InvalidCastException)
                 {
@@ -42,30 +44,33 @@ namespace rsa_mts
                     Console.ReadKey();
                     throw new RsaException("Error because of BigInteger to int cast.");
                 }
+            }
+            set
             {
                 throw new NotImplementedException();
             }
-
-            return (int)BigInteger.ModPow(new BigInteger(msg), _e, _n);
-}
-
-        public int Decrypt(int msg)
-        {       try
-                {
-                    return new Tuple<int, int>((int)_d, (int)_n);
-                }
-                catch (InvalidCastException)
-                {
-                    Console.WriteLine("Some error thing.");
-                    Console.ReadKey();
-                    throw new RsaException("Error because of BigInteger to int cast.");
-                }
-            {
-                throw new NotImplementedException();
-            }
-            return (int) BigInteger.ModPow(new BigInteger(msg), _d, _n);
         }
 
+        public Tuple<int, int> PrivateKey
+        {
+            get
+            {
+                try
+                {
+                    return new Tuple<int, int>((int) _d, (int) _n);
+                }
+                catch (InvalidCastException)
+                {
+                    Console.WriteLine("Some error thing.");
+                    Console.ReadKey();
+                    throw new RsaException("Error because of BigInteger to int cast.");
+                }
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
         /// <summary>
         /// Sieb des Eratosthenes
         /// </summary>
@@ -74,7 +79,7 @@ namespace rsa_mts
         /// diese Zahl in der Liste ist</returns>
         private bool IsPrime(int n)
         {
-
+            
             // Legt eine neue Liste an
             List<bool> zahlenListe = new List<bool>();
 
@@ -103,13 +108,14 @@ namespace rsa_mts
                     } while (j <= n);
                 }
             }
-
+            
             return zahlenListe.ElementAt(n);
         }
 
+
         public byte[] Encrypt(byte[] data)
         {
-            // Ursprung Ausgabetext
+             // Ursprung Ausgabetext
             byte[] ausgabetext = new byte[data.Length];
 
             // Fuer jedes Zeichen im Eingabetext
@@ -123,7 +129,7 @@ namespace rsa_mts
                 BigInteger bigValueOfByte = (int)zubehandelndesZeichen;
 
                 // zwischenergebnis = zu Behandelndes Zeichen (bzw jetzt eindeutige zahl)hoch Variable e
-                BigInteger zwischenergebnis = potenzieren(bigValueOfByte, (int)_e);
+                BigInteger zwischenergebnis =potenzieren(bigValueOfByte, (int)_e);
 
                 //verschluesselte Zahl = zu Behandelndes Zeichen (bzw jetzt eindeutige zahl) modulo N
                 BigInteger verschluesseltesZeichen = zwischenergebnis % _n;
@@ -134,23 +140,21 @@ namespace rsa_mts
             //gibt ausgabetext/Geheimtext zurueck
             return ausgabetext;
         }
-
+        
 
         public byte[] Decrypt(byte[] encryptedData)
         {
             //d = multiplikative Inverse von e
-            _d = ModInverse(_e, phiN);
-
-            
+            _d = modInverse(_e, _phi_n);
 
             //d als int wird benoetigt, da BigInteger.pow ein int als exponent benoetigt
             int dAlsInt = (int)_d;
 
             //Neues byteArray fuer spaeteren klartext
-            byte[] klartext = new byte[encryptedData.Length];
+           byte[] klartext = new byte[encryptedData.Length];
 
             //fuer jeden Code im Array
-            for (int i = 0; i < klartext.Length; ++i)
+            for (int i = 0; i<klartext.Length; ++i)
             {
                 //code wird zu int geparst - da BigInteger nur int's und longs annimmt
                 int codeAlsLong = Convert.ToInt32(klartext[i]);
@@ -175,13 +179,13 @@ namespace rsa_mts
             return klartext;
         }
 
-        /// <summary>
+         /// <summary>
         /// Methode um Modualre Inverse mittels Big Integer zu berechen
         /// </summary>
         /// <param name="a"></param>
         /// <param name="n"></param>
         /// <returns> modulare Inverse zweier Zahlen</returns>
-        private BigInteger ModInverse(BigInteger a, BigInteger n)
+        private BigInteger modInverse(BigInteger a, BigInteger n)
         {
             BigInteger i = n, v = 0, d = 1;
             while (a > 0)
@@ -207,23 +211,13 @@ namespace rsa_mts
         public BigInteger potenzieren(BigInteger basis, int exponent)
         {
             BigInteger ergebnis = 1;
-            if(exponent<0)
+            for (int i = 1; i <= exponent; ++i)
             {
-                exponent = exponent * -1;
-                for (int i = 1; i <= exponent; ++i)
-                    {
-                        ergebnis = ergebnis * basis;
-                    }
-                return 1/ergebnis;
+                ergebnis = ergebnis * basis;
             }
-            else
-            {
-                for (int i = 1; i <= exponent; ++i)
-                {
-                    ergebnis = ergebnis * basis;
-                }
-                return ergebnis;
-            }
+            return ergebnis;
         }
+
     }
+    
 }
