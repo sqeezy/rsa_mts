@@ -14,19 +14,11 @@ namespace rsa_mts
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-<<<<<<< HEAD
-=======
-            byte[] data = FileRead.Read("textdatei.txt");
+            int msg = 123456;
+            RSA alg = new RSA();
 
-            //ausgabe in konsole
-
-            //verschlüsseln
-
-            //ausgabe in konsole
-
-            //entschlüsseln
-
-            //ausgabe in konsole
+            int crypt = alg.Encrypt(msg);
+            Console.WriteLine(alg.Decrypt(crypt));
         }
 
         //erstmal ersetzt

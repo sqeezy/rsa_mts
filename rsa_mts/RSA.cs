@@ -3,35 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace rsa_mts
 {
     internal class RSA
     {
-        private BigInteger _p;
-        private BigInteger _q;
         private BigInteger _n;
-        private BigInteger _phi_n;
         private BigInteger _e;
         private BigInteger _d;
 
-        public RSA(int p = 17, int q = 19)
+        public RSA(int primeOne = 1327, int primeTwo = 2099)
         {
-            if (IsPrime(p) && IsPrime(q))
+            if (!IsPrime(primeOne)||!IsPrime(primeTwo))
             {
-                _p = p;
-                _q = q;
+                throw new ArgumentException("Inputs have to be prime");
             }
-            else
-            {
-                this._p = 31;
-                this._q = 37;
-            }
+            BigInteger p = new BigInteger(primeOne);
+            BigInteger q = new BigInteger(primeTwo);
+
+            _n = BigInteger.Multiply(p, q);
+            BigInteger phiN = new BigInteger((primeOne - 1)*(primeTwo - 1));
+
+            _e = new BigInteger(65537);//Fermatzahl
+            _d = ModInverse(_e, phiN);
         }
 
-        public Tuple<int, int> PublicKey
+        public int Encrypt(int msg)
         {
+<<<<<<< HEAD
             get
             {
                 try
@@ -49,10 +50,14 @@ namespace rsa_mts
             {
                 throw new NotImplementedException();
             }
+=======
+            return (int)BigInteger.ModPow(new BigInteger(msg), _e, _n);
+>>>>>>> 1f4c7733736d931bd34d7f39dc5cfc95cf008512
         }
 
-        public Tuple<int, int> PrivateKey
+        public int Decrypt(int msg)
         {
+<<<<<<< HEAD
             get
             {
                 try
@@ -70,7 +75,11 @@ namespace rsa_mts
             {
                 throw new NotImplementedException();
             }
+=======
+            return (int) BigInteger.ModPow(new BigInteger(msg), _d, _n);
+>>>>>>> 1f4c7733736d931bd34d7f39dc5cfc95cf008512
         }
+
         /// <summary>
         /// Sieb des Eratosthenes
         /// </summary>
@@ -112,6 +121,7 @@ namespace rsa_mts
             return zahlenListe.ElementAt(n);
         }
 
+<<<<<<< HEAD
 
         public byte[] Encrypt(byte[] data)
         {
@@ -180,12 +190,15 @@ namespace rsa_mts
         }
 
         /// <summary>
+=======
+         /// <summary>
+>>>>>>> 1f4c7733736d931bd34d7f39dc5cfc95cf008512
         /// Methode um Modualre Inverse mittels Big Integer zu berechen
         /// </summary>
         /// <param name="a"></param>
         /// <param name="n"></param>
         /// <returns> modulare Inverse zweier Zahlen</returns>
-        private BigInteger modInverse(BigInteger a, BigInteger n)
+        private BigInteger ModInverse(BigInteger a, BigInteger n)
         {
             BigInteger i = n, v = 0, d = 1;
             while (a > 0)
