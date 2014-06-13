@@ -107,6 +107,7 @@ namespace rsa_mts
             return v;
         }
 
+<<<<<<< HEAD
         /// <summary>
         /// Potenziert zwei Zahlen miteinander
         /// </summary>
@@ -136,6 +137,8 @@ namespace rsa_mts
             return ergebnis;
         }
 
+=======
+>>>>>>> 90cd6e37035bde08ce1a374af59b43fbb325fc6b
         private BigInteger ModPow(BigInteger basis,
                                   BigInteger exp,
                                   BigInteger mod)
