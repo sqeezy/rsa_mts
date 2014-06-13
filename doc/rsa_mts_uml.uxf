@@ -4,78 +4,117 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>310</x>
-      <y>230</y>
-      <w>200</w>
-      <h>60</h>
+      <x>830</x>
+      <y>500</y>
+      <w>210</w>
+      <h>100</h>
     </coordinates>
-    <panel_attributes>_FileRead_
+    <panel_attributes>FileRead
 --
+FileRead()
  
 --
-_+Read(filepath : string) : byte[ ]_
++ Read(filepath : string) : byte[ ]
  </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>160</x>
-      <y>30</y>
-      <w>180</w>
-      <h>80</h>
+      <x>500</x>
+      <y>230</y>
+      <w>490</w>
+      <h>190</h>
     </coordinates>
-    <panel_attributes>TUIRSA(program.cs)
+    <panel_attributes>TUIRSA
 --
+_filepath: string
+_fileRead: FileRead
+_readableAble: bool
+_rsa: RSA
+ 
+
+--
+TUIRSA(filepath: string, rsa RSA, fileRead: FileRead, readableConsole: bool)
  
 --
-_+Main(args : String[]):void_</panel_attributes>
++ Execute(): void
+- PrintCollection(): void</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>250</x>
-      <y>80</y>
-      <w>180</w>
-      <h>170</h>
+      <x>900</x>
+      <y>390</y>
+      <w>50</w>
+      <h>130</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>30;30;160;150</additional_attributes>
+    <additional_attributes>30;30;30;110</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>20</x>
-      <y>360</y>
+      <x>300</x>
+      <y>500</y>
       <w>490</w>
-      <h>210</h>
+      <h>240</h>
     </coordinates>
     <panel_attributes>RSA
 --
 - _d : BigInteger
 - _e : BigInteger
 - _n : BigInteger
+ 
 --
-+ RSA(int p, int q)
+RSA()
+RSA(int p, int q)
+ 
+--
 + Encrypt(data : byte[ ]) : byte[ ]
 + Decrypt(data : byte[ ]) : byte[ ]
-+ IsPrime(n : int) : bool
-+ ModInverse(a : BigInteger, n : BigInteger) : BigInteger
-+ Potenzieren(basis : BigInteger, exponent : int) : BigInteger
-+ ModPow(basis : BigInteger, exp : BigInteger, mod : BigInteger): BigInteger 
-</panel_attributes>
+- IsPrime(n : int) : bool
+- ModInverse(a : BigInteger, n : BigInteger) : BigInteger
+- ModPow(basis : BigInteger, exp : BigInteger, mod : BigInteger): BigInteger 
+ </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>90</x>
-      <y>80</y>
-      <w>120</w>
-      <h>300</h>
+      <x>510</x>
+      <y>390</y>
+      <w>50</w>
+      <h>130</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>100;30;30;280</additional_attributes>
+    <additional_attributes>30;30;30;110</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>660</x>
+      <y>100</y>
+      <w>180</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Program
+--
+
+_+Main(args : String[]):void_
+ </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>720</x>
+      <y>120</y>
+      <w>50</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;30;110</additional_attributes>
   </element>
 </diagram>

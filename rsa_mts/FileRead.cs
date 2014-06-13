@@ -7,9 +7,19 @@ using System.Threading.Tasks;
 
 namespace rsa_mts
 {
-    internal static class FileRead
+    /// <summary>
+    /// A class to savely read a textfile into a byte array.
+    /// </summary>
+    public class FileRead
     {
-        public static byte[] Read(string filepath)
+        /// <summary>
+        /// Reads the specified filepath.
+        /// </summary>
+        /// <param name="filepath">The filepath.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentException">No file with this path.</exception>
+        /// <exception cref="System.Exception">Could not read this file.</exception>
+        public byte[] Read(string filepath)
         {
             if (!File.Exists(filepath))
             {

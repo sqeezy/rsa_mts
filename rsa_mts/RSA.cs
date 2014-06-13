@@ -9,11 +9,11 @@ namespace rsa_mts
     /// A class to encrypt single chunks of data using the RSA encryption.
     /// This is not the standard implementation which uses padding and encrypt greater blocks of data.
     /// </summary>
-    internal class RSA
+    public class RSA
     {
-        private BigInteger _d;
-        private BigInteger _e;
-        private BigInteger _n;
+        private readonly BigInteger _d;
+        private readonly BigInteger _e;
+        private readonly BigInteger _n;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RSA"/> class.

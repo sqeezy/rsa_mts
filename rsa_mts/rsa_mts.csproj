@@ -49,6 +49,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="RSA.cs" />
     <Compile Include="RsaException.cs" />
+    <Compile Include="TUIRSA.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
