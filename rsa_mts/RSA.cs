@@ -10,7 +10,6 @@ namespace rsa_mts
         private BigInteger _d;
         private BigInteger _e;
         private BigInteger _n;
-        private BigInteger phiN;
 
         public RSA(int primeOne = 1327,
                    int primeTwo = 2099)
@@ -23,7 +22,7 @@ namespace rsa_mts
             var q = new BigInteger(primeTwo);
 
             _n = BigInteger.Multiply(p, q);
-            phiN = new BigInteger((primeOne - 1)*(primeTwo - 1));
+            BigInteger phiN = new BigInteger((primeOne - 1)*(primeTwo - 1));
 
             _e = new BigInteger(65537); //Fermatzahl
             _d = ModInverse(_e, phiN);
