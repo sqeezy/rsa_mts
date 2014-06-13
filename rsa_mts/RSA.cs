@@ -31,12 +31,12 @@ namespace rsa_mts
 
         public int Encrypt(int msg)
         {
-            return (int) BigInteger.ModPow(new BigInteger(msg), _e, _n);
+            return (int) ModPow(new BigInteger(msg), _e, _n);
         }
 
         public int Decrypt(int msg)
         {
-            return (int) BigInteger.ModPow(new BigInteger(msg), _d, _n);
+            return (int) ModPow(new BigInteger(msg), _d, _n);
         }
 
         /// <summary>
@@ -77,6 +77,8 @@ namespace rsa_mts
 
             return zahlenListe.ElementAt(n);
         }
+
+
 
         /// <summary>
         /// Methode um Modualre Inverse mittels Big Integer zu berechen
@@ -132,6 +134,18 @@ namespace rsa_mts
                 ergebnis = ergebnis*basis;
             }
             return ergebnis;
+        }
+
+        private BigInteger ModPow(BigInteger basis,
+                                  BigInteger exp,
+                                  BigInteger mod)
+        {
+            BigInteger result = 1;
+            for (int i = 1; i <= exp; i++)
+            {
+                result = (result*basis)%mod;
+            }
+            return result;
         }
     }
 }
