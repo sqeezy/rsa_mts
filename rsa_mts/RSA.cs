@@ -23,26 +23,28 @@ namespace rsa_mts
         /// <param name="primeTwo">The prime two.</param>
         /// <exception cref="System.ArgumentException">Inputs have to be prime.</exception>
         private RSA(int primeOne,
-                   int primeTwo)
+                   int primeTwo, int primeThree)
         {
-            if (!IsPrime(primeOne) || !IsPrime(primeTwo))
+            if (!IsPrime(primeOne) || !IsPrime(primeTwo) || !IsPrime(primeThree) || GGT(((primeOne - 1) * (primeTwo - 1)), primeThree) != 1)
             {
-                throw new ArgumentException("Inputs have to be prime");
+                throw new ArgumentException("Inputs have to be prime and e must be coprime to ((p-1) * (q-1))");
             }
             var p = new BigInteger(primeOne);
             var q = new BigInteger(primeTwo);
+            var e = new BigInteger(primeThree);
+            _e = (BigInteger)e;
 
             _n = BigInteger.Multiply(p, q);
-            var phiN = new BigInteger((primeOne - 1)*(primeTwo - 1));
+            var phiN = new BigInteger((primeOne - 1) * (primeTwo - 1));
 
-            _e = new BigInteger(65537); //Fermatzahl - Default that works with given default primes.
+            //e = new BigInteger(65537); //Fermatzahl - Default that works with given default primes.
             _d = ModInverse(_e, phiN);
         }
 
         /// <summary>
         /// Constructor with default values.
         /// </summary>
-        public RSA() : this(1327, 2099)
+        public RSA(): this(1327, 2099, 65537)
         {
         }
 
@@ -56,11 +58,11 @@ namespace rsa_mts
         {
             try
             {
-                return (int) ModPow(new BigInteger(msg), _e, _n);
+                return (int)ModPow(new BigInteger(msg), _e, _n);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new RsaException("A problem occured while encrypting: ", e);
+                throw new RsaException("A problem occured while encrypting: ", ex);
             }
         }
 
@@ -74,11 +76,11 @@ namespace rsa_mts
         {
             try
             {
-                return (int) ModPow(new BigInteger(msg), _d, _n);
+                return (int)ModPow(new BigInteger(msg), _d, _n);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new RsaException("A problem occured while decrypting: ", e);
+                throw new RsaException("A problem occured while decrypting: ", ex);
             }
         }
 
@@ -121,6 +123,31 @@ namespace rsa_mts
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gegebeneZahl1"></param>
+        /// <param name="gegebeneZahl2"></param>
+        public int GGT(int gegebeneZahl1, int gegebeneZahl2)
+        {
+            int rest = -1;
+            int vorherigerRest = -1;
+
+            while (rest != 0)
+            {
+                rest = gegebeneZahl1 % gegebeneZahl2;
+
+                if (rest != 0)
+                {
+                    vorherigerRest = rest;
+                }
+
+                gegebeneZahl1 = gegebeneZahl2;
+                gegebeneZahl2 = (int)rest;
+            }
+            return vorherigerRest;
+        }
+
+        /// <summary>
         /// Computes the modular inverse of a number in relation to a certain modulus.
         /// </summary>
         /// <param name="a">The number to compute the inverse to.</param>
@@ -134,18 +161,18 @@ namespace rsa_mts
                        d = 1;
             while (a > 0)
             {
-                BigInteger t = i/a,
+                BigInteger t = i / a,
                            x = a;
-                a = i%x;
+                a = i % x;
                 i = x;
                 x = d;
-                d = v - t*x;
+                d = v - t * x;
                 v = x;
             }
             v %= n;
             if (v < 0)
             {
-                v = (v + n)%n;
+                v = (v + n) % n;
             }
             return v;
         }
@@ -166,10 +193,10 @@ namespace rsa_mts
             {
                 if (!power.IsEven)
                 {
-                    result = (result*baseToRaise)%modulus;
+                    result = (result * baseToRaise) % modulus;
                 }
                 power >>= 1;
-                baseToRaise = (baseToRaise*baseToRaise)%modulus;
+                baseToRaise = (baseToRaise * baseToRaise) % modulus;
             }
             return result;
         }
