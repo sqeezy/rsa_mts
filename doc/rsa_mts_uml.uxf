@@ -25,7 +25,7 @@ c FileRead()
       <x>500</x>
       <y>230</y>
       <w>520</w>
-      <h>190</h>
+      <h>180</h>
     </coordinates>
     <panel_attributes>TUIRSA
 --
@@ -45,12 +45,12 @@ c TUIRSA(filepath: string, rsa RSA, fileRead: FileRead, readableConsole: bool)
     <type>com.umlet.element.Relation</type>
     <coordinates>
       <x>900</x>
-      <y>390</y>
+      <y>380</y>
       <w>50</w>
-      <h>130</h>
+      <h>140</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>30;30;30;110</additional_attributes>
+    <additional_attributes>30;30;30;120</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
@@ -68,9 +68,9 @@ c TUIRSA(filepath: string, rsa RSA, fileRead: FileRead, readableConsole: bool)
  
 --
 c RSA()
-c RSA(int p, int q)
-+ Encrypt(data : byte[ ]) : byte[ ]
-+ Decrypt(data : byte[ ]) : byte[ ]
+-c RSA(p : int, q : int, e : int)
++ Encrypt(msg : BigInteger) : BigInteger
++ Decrypt(msg : BigInteger) : BigInteger
 - IsPrime(n : int) : bool
 - ModInverse(a : BigInteger, n : BigInteger) : BigInteger
 - ModPow(basis : BigInteger, exp : BigInteger, mod : BigInteger): BigInteger 
@@ -81,12 +81,12 @@ c RSA(int p, int q)
     <type>com.umlet.element.Relation</type>
     <coordinates>
       <x>510</x>
-      <y>390</y>
+      <y>380</y>
       <w>50</w>
-      <h>130</h>
+      <h>140</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>30;30;30;110</additional_attributes>
+    <additional_attributes>30;30;30;120</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Class</type>

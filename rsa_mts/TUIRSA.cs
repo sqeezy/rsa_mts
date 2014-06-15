@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
+using System.Numerics;
 using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -15,7 +16,7 @@ namespace rsa_mts
     /// </summary>
     public class TUIRSA
     {
-        private readonly string _filepathForEncryption;
+        private readonly string _textfilePath;
         private readonly string _filepathForDecryption;
         private readonly FileRead _fileRead;
         private readonly bool _readableConsole;
@@ -25,14 +26,15 @@ namespace rsa_mts
         /// Initializes a new instance of the <see cref="TUIRSA"/> class.
         /// This class controls the flow of the program.
         /// </summary>
-        /// <param name="filepath">The filepath of the textfile to work with.</param>
+        /// <param name="textfilePath">The filepath of the textfile to work with.</param>
+        /// <param name="filepathForDecryption">The filepath of the textfile to output the en.</param>
         /// <param name="rsa">The RSA-implementation in use.</param>
         /// <param name="fileRead">A class to read the textfile.</param>
         /// <param name="readableConsole">Set this to true if your output gets to much to read.</param>
-        public TUIRSA(string filepathForEncryption, string filepathForDecryption, RSA rsa, FileRead fileRead, bool readableConsole = true)
+        public TUIRSA(string textfilePath,RSA rsa, FileRead fileRead,
+            bool readableConsole = true)
         {
-            _filepathForEncryption = filepathForEncryption;
-            _filepathForDecryption = filepathForDecryption;
+            _textfilePath = textfilePath;
             _rsa = rsa;
             _fileRead = fileRead;
             _readableConsole = readableConsole;
@@ -45,14 +47,12 @@ namespace rsa_mts
         /// </summary>
         public void Execute()
         {
-            byte[] readBytes = _fileRead.Read(_filepathForEncryption);
-            List<int> readInts = readBytes.Select(Convert.ToInt32)
-                .ToList();
+            byte[] readBytes = _fileRead.Read(_textfilePath);
 
-            PrintCollection(readInts, String.Format("Bytes written from {0}:", _filepathForEncryption));
+            List<BigInteger> readInts = readBytes.Select(x => new BigInteger(x)).ToList();
+            PrintCollection(readInts, String.Format("Bytes written from {0}:", _textfilePath));
 
-            int[] encryptedInts = readInts.Select(_rsa.Encrypt).ToArray();
-
+            var encryptedInts = readInts.Select(_rsa.Encrypt).ToArray();
             PrintCollection(encryptedInts, "The encrypted values:");
 
 
@@ -82,16 +82,15 @@ namespace rsa_mts
 
             string decryptedString = File.ReadAllText(_filepathForDecryption);
             decryptedString = decryptedString.Replace('\n', ' ');
-            
+
             string[] decrypt = decryptedString.Split(' ');
 
-            List<int> decryptliste = new List<int>();
+            List<BigInteger> decryptliste = new List<BigInteger>();
 
             for (int i = 0; i < decrypt.Length; ++i)
             {
                 try
                 {
-
                     int num1;
                     bool Parsable = Int32.TryParse(decrypt[i], out num1);
                     {
@@ -105,15 +104,13 @@ namespace rsa_mts
                 {
                     Console.WriteLine("Can't parse decrypted things in int's", e, e.StackTrace);
                 }
-
             }
-            int[] decryptedArray = decryptliste.ToArray();
-            int[] decryptedData = decryptedArray.Select(_rsa.Decrypt).ToArray();
+            var decryptedArray = decryptliste.ToArray();
+            var decryptedData = decryptedArray.Select(_rsa.Decrypt).ToArray();
 
             PrintCollection(decryptedData, "Decrypted data:");
 
-            byte[] cryptBytes = decryptedData.Select(Convert.ToByte).ToArray();
-
+            byte[] cryptBytes = decryptedData.Select(x => Convert.ToByte((int) x)).ToArray();
 
             try
             {
@@ -131,7 +128,7 @@ namespace rsa_mts
         /// </summary>
         /// <param name="collection">The collection.</param>
         /// <param name="headline">The headline.</param>
-        private void PrintCollection(IEnumerable<int> collection, string headline)
+        private void PrintCollection(IEnumerable<BigInteger> collection, string headline)
         {
             Console.WriteLine();
             Console.WriteLine("{0}", headline);

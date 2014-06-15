@@ -25,7 +25,7 @@ namespace rsa_mts
         private RSA(int primeOne,
                    int primeTwo, int primeThree)
         {
-            if (!IsPrime(primeOne) || !IsPrime(primeTwo) || !IsPrime(primeThree) || GGT(((primeOne - 1) * (primeTwo - 1)), primeThree) != 1)
+            if (!IsPrime(primeOne) || !IsPrime(primeTwo) || !IsPrime(primeThree) || Gcd(((primeOne - 1) * (primeTwo - 1)), primeThree) != 1)
             {
                 throw new ArgumentException("Inputs have to be prime and e must be coprime to ((p-1) * (q-1))");
             }
@@ -54,11 +54,11 @@ namespace rsa_mts
         /// <param name="msg">The message.</param>
         /// <returns></returns>
         /// <exception cref="RsaException">A problem occured while encrypting.</exception>
-        public int Encrypt(int msg)
+        public BigInteger Encrypt(BigInteger msg)
         {
             try
             {
-                return (int)ModPow(new BigInteger(msg), _e, _n);
+                return ModPow(msg, _e, _n);
             }
             catch (Exception ex)
             {
@@ -72,11 +72,11 @@ namespace rsa_mts
         /// <param name="msg">The message.</param>
         /// <returns></returns>
         /// <exception cref="RsaException">A problem occured while decrypting.</exception>
-        public int Decrypt(int msg)
+        public BigInteger Decrypt(BigInteger msg)
         {
             try
             {
-                return (int)ModPow(new BigInteger(msg), _d, _n);
+                return ModPow(msg, _d, _n);
             }
             catch (Exception ex)
             {
@@ -123,14 +123,14 @@ namespace rsa_mts
         }
 
         /// <summary>
-        /// 
+        /// Method to compute the greatest common divisor of two numbers.
         /// </summary>
-        /// <param name="gegebeneZahl1"></param>
-        /// <param name="gegebeneZahl2"></param>
-        public int GGT(int gegebeneZahl1, int gegebeneZahl2)
+        /// <param name="gegebeneZahl1">First number.</param>
+        /// <param name="gegebeneZahl2">Second number.</param>
+        public BigInteger Gcd(BigInteger gegebeneZahl1, BigInteger gegebeneZahl2)
         {
-            int rest = -1;
-            int vorherigerRest = -1;
+            BigInteger rest = -1;
+            BigInteger vorherigerRest = -1;
 
             while (rest != 0)
             {
