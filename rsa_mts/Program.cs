@@ -12,7 +12,7 @@ namespace rsa_mts
         /// <param name="args"></param>
         private static void Main(string[] args)
         {
-            TUIRSA program = new TUIRSA("Textfile.txt",new RSA(),new FileRead());
+            TUIRSA program = new TUIRSA("Textfile.txt","encrypted.txt", new RSA(),new FileRead());
             program.Execute();
             Console.ReadKey();
         }

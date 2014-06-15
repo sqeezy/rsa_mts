@@ -15,7 +15,8 @@ namespace rsa_mts
     /// </summary>
     public class TUIRSA
     {
-        private readonly string _filepath;
+        private readonly string _filepathForEncryption;
+        private readonly string _filepathForDecryption;
         private readonly FileRead _fileRead;
         private readonly bool _readableConsole;
         private readonly RSA _rsa;
@@ -28,9 +29,10 @@ namespace rsa_mts
         /// <param name="rsa">The RSA-implementation in use.</param>
         /// <param name="fileRead">A class to read the textfile.</param>
         /// <param name="readableConsole">Set this to true if your output gets to much to read.</param>
-        public TUIRSA(string filepath, RSA rsa, FileRead fileRead, bool readableConsole = true)
+        public TUIRSA(string filepathForEncryption, string filepathForDecryption, RSA rsa, FileRead fileRead, bool readableConsole = true)
         {
-            _filepath = filepath;
+            _filepathForEncryption = filepathForEncryption;
+            _filepathForDecryption = filepathForDecryption;
             _rsa = rsa;
             _fileRead = fileRead;
             _readableConsole = readableConsole;
@@ -43,17 +45,70 @@ namespace rsa_mts
         /// </summary>
         public void Execute()
         {
-            byte[] readBytes = _fileRead.Read(_filepath);
+            byte[] readBytes = _fileRead.Read(_filepathForEncryption);
             List<int> readInts = readBytes.Select(Convert.ToInt32)
                 .ToList();
 
-            PrintCollection(readInts, String.Format("Bytes written from {0}:", _filepath));
+            PrintCollection(readInts, String.Format("Bytes written from {0}:", _filepathForEncryption));
 
             int[] encryptedInts = readInts.Select(_rsa.Encrypt).ToArray();
 
             PrintCollection(encryptedInts, "The encrypted values:");
 
-            int[] decryptedData = encryptedInts.Select(_rsa.Decrypt).ToArray();
+
+            try
+            {
+                int elementsInARow = 0;
+                String text = "";
+                foreach (int k in encryptedInts)
+                {
+                    text += k;
+                    text += " ";
+                    if (elementsInARow == 7)
+                    {
+                        text += "\n";
+                        elementsInARow = 0;
+                    }
+                    elementsInARow++;
+                }
+
+                File.WriteAllText("encrypted.txt", text);
+                Console.WriteLine("\nYou can find the encrypted text in 'encrypted.txt'.");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("\nCouldnt write output-file: {0},{1}", e, e.StackTrace);
+            }
+
+            string decryptedString = File.ReadAllText(_filepathForDecryption);
+            decryptedString = decryptedString.Replace('\n', ' ');
+            
+            string[] decrypt = decryptedString.Split(' ');
+
+            List<int> decryptliste = new List<int>();
+
+            for (int i = 0; i < decrypt.Length; ++i)
+            {
+                try
+                {
+
+                    int num1;
+                    bool Parsable = Int32.TryParse(decrypt[i], out num1);
+                    {
+                        if (Parsable)
+                        {
+                            decryptliste.Add(Int32.Parse(decrypt[i]));
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Can't parse decrypted things in int's", e, e.StackTrace);
+                }
+
+            }
+            int[] decryptedArray = decryptliste.ToArray();
+            int[] decryptedData = decryptedArray.Select(_rsa.Decrypt).ToArray();
 
             PrintCollection(decryptedData, "Decrypted data:");
 
@@ -62,8 +117,8 @@ namespace rsa_mts
 
             try
             {
-                File.WriteAllBytes("out.txt", cryptBytes);
-                Console.WriteLine("\nYou can find the decrypted text in 'out.txt'.");
+                File.WriteAllBytes("decrypted.txt", cryptBytes);
+                Console.WriteLine("\nYou can find the decrypted text in 'decrypted.txt'.");
             }
             catch (Exception e)
             {
