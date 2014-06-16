@@ -59,7 +59,7 @@ namespace rsa_mts
 
             try
             {
-                int elementsInARow = 0;
+                int elementsInARow = 1;
                 String text = "";
                 foreach (int k in encryptedInts)
                 {
@@ -81,17 +81,24 @@ namespace rsa_mts
                 Console.WriteLine("\nCouldnt write output-file: {0},{1}", e, e.StackTrace);
             }
             string decryptedString="";
+
+            //if filepath is given we take out the data from file
             if (_filepathForDecryption != null)
             {
                 decryptedString = File.ReadAllText(_filepathForDecryption);
             }
 
+            //eliminate all returns
             decryptedString = decryptedString.Replace('\n', ' ');
 
+            //while splitting the string the spaces will be cleared
             string[] decrypt = decryptedString.Split(' ');
 
+            //problem is we dont have only integers in our array so we need a List to eliminate them
+            //because we dont know how big pur Array is if all ("") are eliminated
             List<BigInteger> decryptliste = new List<BigInteger>();
 
+            //each integer of array will be added in the list 
             for (int i = 0; i < decrypt.Length; ++i)
             {
                 try
@@ -99,6 +106,7 @@ namespace rsa_mts
                     int num1;
                     bool Parsable = Int32.TryParse(decrypt[i], out num1);
                     {
+                        //if it isn't parsable, it won't be added 
                         if (Parsable)
                         {
                             decryptliste.Add(Int32.Parse(decrypt[i]));
@@ -110,15 +118,20 @@ namespace rsa_mts
                     Console.WriteLine("Can't parse decrypted things in int's", e, e.StackTrace);
                 }
             }
+            //now encrypted Values can be filled as ints in the array
             var decryptedArray = decryptliste.ToArray();
+
+            //after running decription, dercrypted Data filled with the correct values 
             var decryptedData = decryptedArray.Select(_rsa.Decrypt).ToArray();
 
             PrintCollection(decryptedData, "Decrypted data:");
+
 
             byte[] cryptBytes = decryptedData.Select(x => Convert.ToByte((int)x)).ToArray();
 
             try
             {
+                //Write the Text in the File 
                 File.WriteAllBytes("decrypted.txt", cryptBytes);
                 Console.WriteLine("\nYou can find the decrypted text in 'decrypted.txt'.");
             }
