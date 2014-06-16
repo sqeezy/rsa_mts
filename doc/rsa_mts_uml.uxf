@@ -4,10 +4,10 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>830</x>
-      <y>500</y>
+      <x>630</x>
+      <y>420</y>
       <w>210</w>
-      <h>100</h>
+      <h>80</h>
     </coordinates>
     <panel_attributes>FileRead
 --
@@ -15,28 +15,28 @@
  
 --
 c FileRead()
-+ Read(filepath : string) : byte[ ]
- </panel_attributes>
++ Read(filepath : string) : byte[ ]</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>500</x>
-      <y>230</y>
-      <w>520</w>
+      <x>120</x>
+      <y>150</y>
+      <w>710</w>
       <h>180</h>
     </coordinates>
     <panel_attributes>TUIRSA
 --
 _filepath: string
+_filepathforDecryption_string
 _fileRead: FileRead
 _readableAble: bool
 _rsa: RSA
  
 
 --
-c TUIRSA(filepath: string, rsa RSA, fileRead: FileRead, readableConsole: bool)
+c TUIRSA(filepath: string, filepathForDecryption: string, rsa RSA, fileRead: FileRead, readableConsole: bool)
 + Execute(): void
 - PrintCollection(): void</panel_attributes>
     <additional_attributes/>
@@ -44,8 +44,8 @@ c TUIRSA(filepath: string, rsa RSA, fileRead: FileRead, readableConsole: bool)
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>900</x>
-      <y>380</y>
+      <x>710</x>
+      <y>300</y>
       <w>50</w>
       <h>140</h>
     </coordinates>
@@ -55,10 +55,10 @@ c TUIRSA(filepath: string, rsa RSA, fileRead: FileRead, readableConsole: bool)
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>300</x>
-      <y>500</y>
+      <x>120</x>
+      <y>420</y>
       <w>490</w>
-      <h>240</h>
+      <h>230</h>
     </coordinates>
     <panel_attributes>RSA
 --
@@ -73,15 +73,14 @@ c RSA()
 + Decrypt(msg : BigInteger) : BigInteger
 - IsPrime(n : int) : bool
 - ModInverse(a : BigInteger, n : BigInteger) : BigInteger
-- ModPow(basis : BigInteger, exp : BigInteger, mod : BigInteger): BigInteger 
- </panel_attributes>
+- ModPow(basis : BigInteger, exp : BigInteger, mod : BigInteger): BigInteger</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>510</x>
-      <y>380</y>
+      <x>330</x>
+      <y>300</y>
       <w>50</w>
       <h>140</h>
     </coordinates>
@@ -91,8 +90,8 @@ c RSA()
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>660</x>
-      <y>100</y>
+      <x>280</x>
+      <y>20</y>
       <w>180</w>
       <h>70</h>
     </coordinates>
@@ -107,8 +106,8 @@ _+Main(args : String[]):void_
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>720</x>
-      <y>140</y>
+      <x>340</x>
+      <y>60</y>
       <w>50</w>
       <h>110</h>
     </coordinates>
