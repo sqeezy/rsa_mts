@@ -31,10 +31,11 @@ namespace rsa_mts
         /// <param name="rsa">The RSA-implementation in use.</param>
         /// <param name="fileRead">A class to read the textfile.</param>
         /// <param name="readableConsole">Set this to true if your output gets to much to read.</param>
-        public TUIRSA(string textfilePath,RSA rsa, FileRead fileRead,
+        public TUIRSA(string textfilePath, string filepathForDecryption, RSA rsa, FileRead fileRead,
             bool readableConsole = true)
         {
             _textfilePath = textfilePath;
+            _filepathForDecryption = filepathForDecryption;
             _rsa = rsa;
             _fileRead = fileRead;
             _readableConsole = readableConsole;
@@ -79,8 +80,12 @@ namespace rsa_mts
             {
                 Console.WriteLine("\nCouldnt write output-file: {0},{1}", e, e.StackTrace);
             }
+            string decryptedString="";
+            if (_filepathForDecryption != null)
+            {
+                decryptedString = File.ReadAllText(_filepathForDecryption);
+            }
 
-            string decryptedString = File.ReadAllText(_filepathForDecryption);
             decryptedString = decryptedString.Replace('\n', ' ');
 
             string[] decrypt = decryptedString.Split(' ');
@@ -110,7 +115,7 @@ namespace rsa_mts
 
             PrintCollection(decryptedData, "Decrypted data:");
 
-            byte[] cryptBytes = decryptedData.Select(x => Convert.ToByte((int) x)).ToArray();
+            byte[] cryptBytes = decryptedData.Select(x => Convert.ToByte((int)x)).ToArray();
 
             try
             {
